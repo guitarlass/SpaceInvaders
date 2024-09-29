@@ -1,4 +1,5 @@
 import turtle
+from bullet import Bullet
 
 
 class Ship(turtle.Turtle):
@@ -6,13 +7,12 @@ class Ship(turtle.Turtle):
         super().__init__()
         self.hideturtle()
         self.shape("triangle")
-        self.color("dark blue")
+        self.color("dark green")
         self.penup()
         self.goto(0, -280)
         self.shapesize(stretch_wid=2, stretch_len=1)
         self.setheading(90)
         self.showturtle()
-
 
     def move_right(self):
         if self.xcor() < 380:
@@ -20,6 +20,12 @@ class Ship(turtle.Turtle):
             self.setx(new_x)
 
     def move_left(self):
-        if self.xcor() > -380:
+        if self.xcor() > -390:
             new_x = self.xcor() - 10
             self.setx(new_x)
+
+    # def shoot(self, bullets):
+    #     bullet = Bullet((self.xcor(), self.ycor()))
+    #     bullets.append(bullet)
+    #     bullet.shoot()
+        # return bullet
