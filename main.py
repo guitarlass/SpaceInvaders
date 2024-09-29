@@ -191,12 +191,12 @@ while game_on:
 
     for alien_bullet in alien_bullets:
         alien_bullet.move_alien_bullet()
-        # for obstacle in obstacles:
-        #     if obstacle.distance(alien_bullet.xcor(), alien_bullet.ycor()) < 20:  # Adjust collision range
-        #         alien_bullet.remove()
-        #         alien_bullets.remove(alien_bullet)
-        #         obstacle.remove()
-        #         obstacles.remove(obstacle)
+        for obstacle in obstacles:
+            if obstacle.distance(alien_bullet.xcor(), alien_bullet.ycor()) < 20:  # Adjust collision range
+                alien_bullet.remove()
+                alien_bullets.remove(alien_bullet)
+                obstacle.remove()
+                obstacles.remove(obstacle)
         # hits ship
         if ship.distance(alien_bullet.xcor(), alien_bullet.ycor()) < 20:  # Adjust collision range
             ship.hideturtle()
