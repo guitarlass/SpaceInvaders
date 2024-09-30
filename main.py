@@ -3,6 +3,8 @@ from ship import Ship
 from alien import Alien
 from bullet import Bullet
 from letter_brick import LetterBrick
+from textboard import TextBoard
+from endtext_lable import EndTextLabel
 import random
 
 screen = turtle.Screen()
@@ -12,12 +14,16 @@ screen.setup(width=800, height=600)
 screen.bgcolor("lightblue")
 screen.tracer(0)
 
+score = 0
+lives = 1
 bullets = []
 aliens = []
 obstacles = []
 alien_bullets = []
 
 ship = Ship()
+scoreboard = TextBoard((-390, 275), "Score", score)
+lifesboard = TextBoard((326, 275), "Lives", lives)
 
 alien_x_pos = -200
 alien_y_pos = 150
@@ -160,7 +166,7 @@ def move_aliens_left():
 create_alien_bullet()
 
 game_on = True
-lives = 3
+
 
 while game_on:
     screen.update()
@@ -179,12 +185,16 @@ while game_on:
                 bullets.remove(bullet)
                 alien.remove()
                 aliens.remove(alien)
+                score += 10
+                scoreboard.update_board("Score", score)
         for obstacle in obstacles:
             if obstacle.distance(bullet.xcor(), bullet.ycor()) < 20:  # Adjust collision range
                 bullet.remove()
                 bullets.remove(bullet)
                 obstacle.remove()
                 obstacles.remove(obstacle)
+                score += 5
+                scoreboard.update_board("Score", score)
         if bullet.is_off_screen():
             bullet.remove()
             bullets.remove(bullet)
@@ -209,11 +219,15 @@ while game_on:
                 ship = Ship()
                 setup_ship_controls(ship)
             lives -= 1
+            lifesboard.update_board("Lives", lives)
         if alien_bullet.is_off_screen():
             alien_bullet.remove()
             alien_bullets.remove(alien_bullet)
         if lives == 0:
             game_on = False
+            end_text = EndTextLabel("Game Over!")
+            end_text.update_text_with_bg("Game Over!", "black")
+
 
 
 screen.mainloop()
