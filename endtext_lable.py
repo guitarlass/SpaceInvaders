@@ -11,10 +11,10 @@ class EndTextLabel(turtle.Turtle):
         self.goto(0, 0)
         self.fillcolor("black")
         # self.setheading(90)
-        self.write(f"{message}", align="left", font=("Arial", 12, "bold"))
-        self.speed(0)  # Speed up drawing
+        # self.write(f"{message}", align="left", font=("Arial", 12, "bold"))
+        self.speed(0)  # to speed up drawing
 
-    # Function to draw a rectangle background
+    # draw a rectangle background
     def draw_background(self, width, height, bg_color):
         self.fillcolor(bg_color)
         self.begin_fill()
@@ -29,14 +29,12 @@ class EndTextLabel(turtle.Turtle):
 
         self.end_fill()
 
-    # Function to write text with a background
+    # write text with a background
     def update_text_with_bg(self, new_text, bg_color):
         self.clear()  # Clear previous text and background
+        self.goto(0, 85)  # Adjust position
+        self.draw_background(400, 100, bg_color)
 
-        # Set the position for the background shape
-        self.goto(-50, 20)  # Adjust position as needed
-        self.draw_background(400, 100, bg_color)  # Width, height, background color
-
-        # Write the text on top of the background
-        self.goto(0, 0)  # Move to text position
+        # Write the text on top of the bg
+        self.goto(0, 0)  # Move to position
         self.write(new_text, align="center", font=("Arial", 24, "normal"))
