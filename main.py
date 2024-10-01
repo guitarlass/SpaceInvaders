@@ -6,6 +6,7 @@ from letter_brick import LetterBrick
 from textboard import TextBoard
 from endtext_lable import EndTextLabel
 import random
+import time
 
 screen = turtle.Screen()
 
@@ -15,7 +16,7 @@ screen.bgcolor("lightblue")
 screen.tracer(0)
 
 score = 0
-lives = 1
+lives = 3
 bullets = []
 aliens = []
 obstacles = []
@@ -114,10 +115,18 @@ for letter in letters:
         y -= 20
     start_x += 100 + 10
 
+cool_down_time = 1
+last_shot_time = 0
+
 
 def create_ship_bullet():
-    new_bullet = Bullet((ship.xcor(), ship.ycor()), "dark green")
-    bullets.append(new_bullet)
+    global last_shot_time
+    current_time = time.time()
+
+    if current_time-last_shot_time >= cool_down_time:
+        new_bullet = Bullet((ship.xcor(), ship.ycor()), "dark green")
+        bullets.append(new_bullet)
+        last_shot_time = current_time
 
 
 def create_alien_bullet():
@@ -126,7 +135,7 @@ def create_alien_bullet():
         new_alien_bullet = Bullet((alien_.xcor(), alien_.ycor()), "#c6fa1b")
         alien_bullets.append(new_alien_bullet)
         # Schedule the next bullet creation
-    screen.ontimer(create_alien_bullet, 1000)
+    screen.ontimer(create_alien_bullet, 300)
 
 
 def setup_ship_controls(ship_instance):
@@ -139,6 +148,7 @@ setup_ship_controls(ship)
 screen.onkey(create_ship_bullet, "space")
 
 moving_right = True
+
 
 def move_aliens_right():
     reached_boundary = False
@@ -167,7 +177,6 @@ create_alien_bullet()
 
 game_on = True
 
-
 while game_on:
     screen.update()
     if moving_right:
@@ -178,6 +187,7 @@ while game_on:
             moving_right = True
 
     for bullet in bullets:
+        # screen.ontimer(bullet.move, 1000)
         bullet.move()
         for alien in aliens:
             if alien.distance(bullet.xcor(), bullet.ycor()) < 20:  # Adjust collision range
@@ -194,6 +204,14 @@ while game_on:
                 obstacle.remove()
                 obstacles.remove(obstacle)
                 score += 5
+                scoreboard.update_board("Score", score)
+        for alien_bullet in alien_bullets:
+            if alien_bullet.distance(bullet.xcor(), bullet.ycor()) < 10:
+                bullet.remove()
+                bullets.remove(bullet)
+                alien_bullet.remove()
+                alien_bullets.remove(alien_bullet)
+                score += 10
                 scoreboard.update_board("Score", score)
         if bullet.is_off_screen():
             bullet.remove()
@@ -226,8 +244,10 @@ while game_on:
         if lives == 0:
             game_on = False
             end_text = EndTextLabel("Game Over!")
-            end_text.update_text_with_bg("Game Over!", "black")
-
-
+            end_text.update_text_with_bg(f"Game Over!\nYour Score is {score}", "black")
+        if not aliens:
+            game_on = False
+            end_text = EndTextLabel("You Won!")
+            end_text.update_text_with_bg(f"You Won!\nYour Score is {score}", "black")
 
 screen.mainloop()
