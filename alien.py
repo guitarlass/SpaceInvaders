@@ -13,13 +13,14 @@ class Alien(turtle.Turtle):
         # self.setheading(90)
         self.showturtle()
         self.speed(1)
+        self.step = .5
 
     def remove(self):
         self.hideturtle()  # Hide the turtle
         self.clear()
 
     def move_right(self):
-        self.setx(self.xcor() + 0.4)
+        self.setx(self.xcor() + self.step)
 
     def move_left(self):
-        self.setx(self.xcor() - 0.4)
+        self.setx(self.xcor() - self.step)
