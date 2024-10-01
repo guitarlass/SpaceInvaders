@@ -9,11 +9,11 @@ class Bullet(turtle.Turtle):
         self.color(color)
         self.penup()
         self.goto(position)
-        self.shapesize(stretch_wid=.2, stretch_len=1)
+        self.shapesize(stretch_wid=.2, stretch_len=.8)
         self.setheading(90)
         self.showturtle()
         self.speed(1)
-        self.step = 3
+        self.step = 2
 
     def remove(self):
         self.hideturtle()  # Hide the turtle
@@ -28,4 +28,4 @@ class Bullet(turtle.Turtle):
         self.sety(self.ycor() + self.step)
 
     def move_alien_bullet(self):
-        self.sety(self.ycor() - self.step)
+        self.sety(self.ycor() - (self.step-1))
